@@ -1,40 +1,40 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: apps/v1  # Specifies the API version for the Deployment resource.
+kind: Deployment  # Defines the kind of resource, which is a Deployment.
 metadata:
-  name: flask-app
-  namespace: slmsshk
+  name: flask-app  # The name of the Deployment.
+  namespace: slmsshk  # The namespace in which the Deployment is created.
 spec:
-  replicas: 1
+  replicas: 1  # Number of pod replicas to run.
   selector:
     matchLabels:
-      app: flask-app
+      app: flask-app  # Label selector to identify the pods managed by this Deployment.
   template:
     metadata:
       labels:
-        app: flask-app
+        app: flask-app  # Labels to apply to the pods.
     spec:
       containers:
-      - name: flask-app
-        image: 043309325682.dkr.ecr.us-east-1.amazonaws.com/flask/app:latest
+      - name: flask-app  # Name of the container.
+        image: 043309325682.dkr.ecr.ap-south-1.amazonaws.com/jarvis/appv2:latest  # Docker image to use for the container.
         ports:
-        - containerPort: 80
+        - containerPort: 80  # Port that the container exposes.
         resources:
           limits:
-            memory: "512Mi"
-            cpu: "500m"
+            memory: "512Mi"  # Maximum amount of memory the container can use.
+            cpu: "500m"  # Maximum amount of CPU the container can use.
           requests:
-            memory: "256Mi"
-            cpu: "250m"
+            memory: "256Mi"  # Minimum amount of memory the container requests.
+            cpu: "250m"  # Minimum amount of CPU the container requests.
 ---
-apiVersion: v1
-kind: Service
+apiVersion: v1  # Specifies the API version for the Service resource.
+kind: Service  # Defines the kind of resource, which is a Service.
 metadata:
-  name: flask-app-service
-  namespace: slmsshk
+  name: flask-app-service  # The name of the Service.
+  namespace: slmsshk  # The namespace in which the Service is created.
 spec:
-  type: LoadBalancer
+  type: LoadBalancer  # Type of Service, which is a LoadBalancer.
   ports:
-  - port: 80
-    targetPort: 80
+  - port: 80  # Port that the Service exposes.
+    targetPort: 80  # Port on the container to which the traffic is directed.
   selector:
-    app: flask-app
+    app: flask-app  # Label selector to identify the pods targeted by this Service.
